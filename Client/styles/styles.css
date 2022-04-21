@@ -21,9 +21,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
   border: none;
   cursor: pointer;
   opacity: 1.0;
-    position:relative;
-  /* bottom: 23px;
-  right: 28px; */
+  position:relative;
   left: 150px;
   top: -40px;
   width: 100px;
@@ -32,12 +30,6 @@ body {font-family: Arial, Helvetica, sans-serif;}
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  /* position:absolute;
-  bottom: -400px; */
-  /* right: 15px; */
-  /* border: 3px solid #f1f1f1;
-  z-index: 9;
-  size: 150px; */
   position:absolute;
   top: 15px;
   left: 100px;
