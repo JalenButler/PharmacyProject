@@ -1,0 +1,41 @@
+.navbar {
+    width: 100%;
+    height: 50px;
+    background-color: green;
+}
+
+.row {
+    display: flex;
+}
+  
+.column {
+    flex: 50%;
+}
+
+th {
+    background-color: green;
+    color: white;
+    border: 1px solid;
+    border-color: black;
+}
+
+th, td {
+    border: 1px solid;
+    text-align: center;
+    width: 3.086067px;
+    height: 3.086067px;
+}
+
+.today-cal {
+    background-color: green;
+    color: white;
+}
+
+table {
+    border: 1px solid;
+    width: 100%;
+    height: 400px;
+    padding-left: 20%;
+}
+
+
