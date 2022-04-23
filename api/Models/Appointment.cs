@@ -4,5 +4,6 @@ namespace api.Models
     {
         public string ApptReason {get; set;}
         public Availability Slot {get; set;}
+        public int ApptID {get; set;}
     }
 }
