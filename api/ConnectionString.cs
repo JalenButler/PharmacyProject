@@ -1,4 +1,4 @@
-namespace PharmacyProject
+namespace api
 {
     public class ConnectionString
     {

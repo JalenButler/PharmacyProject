@@ -8,7 +8,7 @@ namespace api.Interfaces
          public void Create(Availability avlb);
          public void Delete(int id);
          public List<Availability> GetAll();
-         public Availability GetOne();
+         public Availability GetOne(int id);
          public void Update(Availability avlb);
     }
 }

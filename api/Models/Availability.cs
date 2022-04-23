@@ -3,9 +3,9 @@ namespace api.Models
 {
     public class Availability
     {
-        public int Id {get; set;}
-        public DateTime Start {get; set;}
-        public DateTime End {get; set;}
-        public bool IsBooked {get; set;}
+        public int availID {get; set;}
+        public int userId {get; set;}
+        public DateTime startDateTime {get; set;}
+        public DateTime endDateTime {get; set;}
     }
 }

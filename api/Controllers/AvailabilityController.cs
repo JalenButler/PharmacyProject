@@ -4,6 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+using api.Interfaces;
+using api.Models;
+using api.Database;
+
 
 namespace api.Controllers
 {
@@ -12,32 +17,41 @@ namespace api.Controllers
     public class AvailabilityController : ControllerBase
     {
         // GET: api/Availability
+        [EnableCors("AnotherPolicy")]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<Availability> Get()
         {
-            return new string[] { "value1", "value2" };
+            IHandleAvailability availability = new AvailabilityUtility();
+            return availability.GetAll();
         }
-
+        
         // GET: api/Availability/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [EnableCors("AnotherPolicy")]
+        [HttpGet("{id}", Name = "GetAvailability")]
+        public Availability Get(int id)
         {
-            return "value";
+            IHandleAvailability getAvailability = new AvailabilityUtility();
+            return getAvailability.GetOne(id);
         }
 
         // POST: api/Availability
+        [EnableCors("AnotherPolicy")]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Availability value)
         {
+            IHandleAvailability postAvailability = new AvailabilityUtility();
+            postAvailability.Create(value);
         }
 
         // PUT: api/Availability/5
+        [EnableCors("AnotherPolicy")]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE: api/Availability/5
+        [EnableCors("AnotherPolicy")]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

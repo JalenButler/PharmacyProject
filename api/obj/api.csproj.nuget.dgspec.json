@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\source\\repos\\PharmacyProject\\api\\api.csproj": {}
+    "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\source\\repos\\PharmacyProject\\api\\api.csproj": {
+    "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
+        "projectUniqueName": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\jalen\\.nuget\\packages\\",
-        "outputPath": "C:\\source\\repos\\PharmacyProject\\api\\obj\\",
+        "projectPath": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj",
+        "packagesPath": "C:\\Users\\jaide\\.nuget\\packages\\",
+        "outputPath": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jalen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jaide\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -38,6 +38,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Cors": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[5.0.0, )"
@@ -45,6 +49,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[5.6.3, )"
+            },
+            "mysql.data": {
+              "target": "Package",
+              "version": "[8.0.28, )"
             }
           },
           "imports": [
@@ -65,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
         }
       }
     }
