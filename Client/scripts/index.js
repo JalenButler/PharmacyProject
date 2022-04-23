@@ -1,4 +1,4 @@
-const baseUrl = "https://localhost:5001";
+const baseUrl = "https://localhost:5001/api";
 var date = new Date();
 date.setDate(1);
 
@@ -119,9 +119,75 @@ function renderData(selectedDate) {
   var html = "";
   html += `<div id="selected-date" class="row"><h3>Selected Date: ${selectedDate}</h3></div>`;
 
-  
+
 
   data.innerHTML = html;
+}
+
+//API call to get availabilities
+function getAvailabilities() {
+  var url = baseUrl + "/availability";
+
+  fetch(url).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+
+  }).catch(function(error){
+    console.log(error);
+  })
+}
+
+//API call to add/create a new availability
+function addAvailability() {
+  var url = baseUrl + "/availability";
+}
+
+//API call to delete an availability
+function deleteAvailability(id) {
+  var url = baseUrl + "/availability/" + id;
+}
+
+//API call to update availability??
+
+
+//API call to get users
+function getUsers() {
+  
+}
+
+//API call to add/create a new user
+function addUser() {
+
+}
+
+//API call to delete a user
+function deleteUser() {
+
+}
+
+//API call to update a user
+function updateUser() {
+
+}
+
+//API call to get appointments
+function getAppointments() {
+
+}
+
+//API call to add/create appointment
+function addAppointment() {
+
+}
+
+//API call to delete an appointment
+function deleteAppointment() {
+
+}
+
+//API call to update an appointment
+function updateAppointment() {
+
 }
 
 function openForm() {
