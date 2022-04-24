@@ -1,4 +1,4 @@
-const baseUrl = "";
+const baseUrl = "https://localhost:5001/api";
 var date = new Date();
 date.setDate(1);
 
@@ -46,12 +46,13 @@ const daysInMonth = [
   31
 ];
 
+//Function to page contents 
 function handleOnLoad() {
   renderData(new Date().toDateString());
   renderCalendar();
 }
 
-
+//Function to render calendar for the page
 function renderCalendar() {
   
   const calendar = document.getElementById("calendar");
@@ -79,7 +80,7 @@ function renderCalendar() {
         next++;
       }
       else{
-        if(day == new Date().getDate()){
+        if((day == new Date().getDate()) && (date.getMonth() == new Date().getMonth())){
           html += `<td class="today-cal" onclick="handleDateClick(${day}, ${date.getMonth()}, ${date.getFullYear()})">${day}</td>`;
         }else{
           html += `<td class="curr-month" onclick="handleDateClick(${day}, ${date.getMonth()}, ${date.getFullYear()})">${day}</td>`;
@@ -94,26 +95,105 @@ function renderCalendar() {
   calendar.innerHTML = html;
 }
 
+//Function that changes the date on the page when a different day on the calendar is selected
 function handleDateClick(day, month, year) {
   var selected = new Date(year, month, day);
   renderData(selected.toDateString());
 }
 
+//Changes calendar to previous month
 function handlePrevClick() {
   date.setMonth(date.getMonth() - 1);
   renderCalendar();
 }
 
+//Changes calendar to next month
 function handleNextClick() {
   date.setMonth(date.getMonth() + 1);
   renderCalendar();
 }
 
+//Function
 function renderData(selectedDate) {
   const data = document.getElementById("data");
   var html = "";
   html += `<div id="selected-date" class="row"><h3>Selected Date: ${selectedDate}</h3></div>`;
 
+
+
   data.innerHTML = html;
 }
 
+//API call to get availabilities
+function getAvailabilities() {
+  var url = baseUrl + "/availability";
+
+  fetch(url).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+
+  }).catch(function(error){
+    console.log(error);
+  })
+}
+
+//API call to add/create a new availability
+function addAvailability() {
+  var url = baseUrl + "/availability";
+}
+
+//API call to delete an availability
+function deleteAvailability(id) {
+  var url = baseUrl + "/availability/" + id;
+}
+
+//API call to update availability??
+
+
+//API call to get users
+function getUsers() {
+  
+}
+
+//API call to add/create a new user
+function addUser() {
+
+}
+
+//API call to delete a user
+function deleteUser() {
+
+}
+
+//API call to update a user
+function updateUser() {
+
+}
+
+//API call to get appointments
+function getAppointments() {
+
+}
+
+//API call to add/create appointment
+function addAppointment() {
+
+}
+
+//API call to delete an appointment
+function deleteAppointment() {
+
+}
+
+//API call to update an appointment
+function updateAppointment() {
+
+}
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
