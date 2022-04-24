@@ -1,4 +1,6 @@
 const baseUrl = "https://localhost:5001/api";
+var userURL = baseUrl + "/" + "Users";
+var userList = [];
 var date = new Date();
 date.setDate(1);
 
@@ -152,11 +154,76 @@ function deleteAvailability(id) {
 
 //API call to get users
 function getUsers() {
-  
+ 
+  fetch(userURL).then(function(response){
+    return response.json();
+}) .then(function(json) {
+    userList = json;
+}).catch(function(error){
+  console.log(error);
+});
 }
 
 //API call to add/create a new user
-function addUser() {
+function addUser(){
+var userGender = document.getElementById("gender").value;
+var userBirthDate = document.getElementById("birthday").value;
+var usertype;
+var userName = document.getElementById("email").value;
+var userPassword = document.getElementById("password").value;
+var firstName = document.getElementById("firstname").value;
+var lastName = document.getElementById("lastname").value;
+//console.log(document.getElementById("email").value);
+if(document.getElementById("title").value == "pharmacist")
+{
+  usertype = 1;
+}
+if(document.getElementById("title").value == "pharmacytech")
+{
+  usertype = 2;
+}
+if(document.getElementById("title").value == "customer")
+{
+  usertype = 3;
+}
+if(document.getElementById("title").value == "delivery"){
+  usertype = 4;
+}
+
+console.log(firstName);
+console.log(lastName);
+console.log(userPassword);
+console.log(usertype);
+console.log(userBirthDate);
+console.log(userGender);
+
+alert("Your account was created successfully. Please Login to continue.");
+
+
+  fetch(userURL, {
+      method: "POST",
+      headers: {
+          "Accept": 'application/json',
+          "Content-Type": 'application/json'
+      },
+      body: JSON.stringify({
+          userGender: userGender,
+          userBirthDate: userBirthDate,
+          usertype: usertype,
+          userName:userName,
+          userPassword: userPassword,
+          FirstName: firstName,
+          LastName: lastName
+
+      })
+  })
+  .then((response)=>{
+      console.log(response)
+      getUsers();
+  }).catch(function(error){
+    console.log(error);
+  });
+
 
 }
 

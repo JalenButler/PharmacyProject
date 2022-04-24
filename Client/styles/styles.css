@@ -81,3 +81,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
   color: black;
 }
 
+#bday{
+color: black;
+position: relative;
+left: -30px;
+}
