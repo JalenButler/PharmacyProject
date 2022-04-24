@@ -59,7 +59,7 @@ namespace api.Controllers
         public void Delete(int id)
         {
             IHandleAppointment deleteAppointment = new AppointmentUtility();
-            getAppointment.Delete(id);
+            deleteAppointment.Delete(id);
         }
     }
 }

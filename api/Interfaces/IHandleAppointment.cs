@@ -8,7 +8,7 @@ namespace api.Interfaces
          public void Create(Appointment appt);
          public void Delete(int id);
          public List<Appointment> GetAll();
-         public Appointment GetOne();
+         public Appointment GetOne(int id);
          public void Update(Appointment appt);
     }
 }

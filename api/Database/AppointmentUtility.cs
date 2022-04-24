@@ -23,7 +23,7 @@ namespace api.Database
             using var cmd = new MySqlCommand(stm, con);
 
             
-            cmd.Parameters.AddWithValue("@apptReason",appointment.ApptReason);
+            cmd.Parameters.AddWithValue("@apptReason", newappointment.ApptReason);
             
             
             cmd.ExecuteNonQuery();
@@ -43,7 +43,7 @@ namespace api.Database
             using var con = new MySqlConnection(cs);
             con.Open();
 
-            string stm = @"DELETE from appointment where apptId =" + apptId;
+            string stm = @"DELETE from appointment where apptId =" + id;
 
             using var cmd = new MySqlCommand(stm, con);
 
@@ -65,7 +65,7 @@ namespace api.Database
             MySqlConnection con = new MySqlConnection(cs);
             con.Open();
 
-            string stm = @"SELECT * from appointment order by datetime desc";
+            string stm = @"SELECT * from appointment";
             using var cmd = new MySqlCommand(stm, con);
 
             using MySqlDataReader rdr = cmd.ExecuteReader();
@@ -96,7 +96,7 @@ namespace api.Database
            
 
 
-            string stm = @"UPDATE appointment set apptReason = '" + Appointment.ApptReason  + "' WHERE id = " + Appointment.ApptID;
+            string stm = @"UPDATE appointment set apptReason = '" + appointment.ApptReason  + "' WHERE id = " + appointment.ApptID;
 
              using var cmd = new MySqlCommand(stm, con);
 
@@ -119,11 +119,11 @@ namespace api.Database
 
             using var cmd = new MySqlCommand(stm, con);
             MySqlDataReader reader = cmd.ExecuteReader();
-            while(rdr.Read())
+            while(reader.Read())
             {
                 
-                appointment.apptId = reader.GetInt32(0);
-                appointment.apptReason = reader.GetString(1);
+                appointment.ApptID = reader.GetInt32(0);
+                appointment.ApptReason = reader.GetString(1);
             } 
             con.Close();
             return appointment;
