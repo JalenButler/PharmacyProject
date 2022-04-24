@@ -115,25 +115,68 @@ function handleNextClick() {
   renderCalendar();
 }
 
-//Function
+//Function to render right side of webpage
 function renderData(selectedDate) {
-  const data = document.getElementById("data");
+  renderDate(selectedDate);
+  renderButtons();
+  renderCrud(2);
+}
+
+//Displays selected date from calendar above appt/avail/user data side
+function renderDate(selectedDate) {
   var html = "";
-  html += `<div id="selected-date" class="row"><h3>Selected Date: ${selectedDate}</h3></div>`;
+  html += `<h3>Selected Date: ${selectedDate}</h3>`;
+  document.getElementById("selected-date").innerHTML = html;
+}
 
+//Displays buttons to change data tables
+function renderButtons() {
+  var html = "";
+  html += `<button id="users" type="button" class="btn btn-secondary" onclick="getUsers(); renderCrud(1);">Users</button>`;
+  html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2);">Availabilities</button>`;
+  html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3);">Appointments</button>`;
+  document.getElementById("button-row").innerHTML = html;
+}
 
-
-  data.innerHTML = html;
+//Renders buttons to perform crud operations on data
+function renderCrud(type) {
+  var html = "";
+  if(type == 1) {
+    //Users
+    html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Update</button>`;
+    html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
+  }else if(type == 2) {
+    //Availabilities
+    html += `<button id="add" type="button" class="btn btn-secondary" onclick="renderAvailabilityForm()">Add</button>`;
+    html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Update</button>`;
+    html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
+  }else if(type == 3) {
+    //Appointments
+    html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
+  }
+  document.getElementById("crud-controls").innerHTML = html;
 }
 
 //API call to get availabilities
 function getAvailabilities() {
   var url = baseUrl + "/availability";
+  let html = "";
 
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
+    html += `<table><tr><th>Availability ID</th><th>Pharm ID</th><th>Start</th><th>End</th></tr>`;
+    json.forEach(availability => {
+      html += `<tr>`;
+      html += `<td>${availability.availID}</td>`;
+      html += `<td>${availability.userID}</td>`;
+      html += `<td>${availability.startDateTime}</td>`;
+      html += `<td>${availability.endDateTime}</td>`;
+      html += `</tr>`;
+    });
+    html += `</table>`;
 
+    document.getElementById("right-table").innerHTML = html;
   }).catch(function(error){
     console.log(error);
   })
