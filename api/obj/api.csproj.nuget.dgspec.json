@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj": {}
+    "C:\\source\\repos\\PharmacyProject\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj": {
+    "C:\\source\\repos\\PharmacyProject\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj",
+        "projectUniqueName": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\jaide\\.nuget\\packages\\",
-        "outputPath": "C:\\source\\repos\\MIS321\\pharmacyproject\\api\\obj\\",
+        "projectPath": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
+        "packagesPath": "C:\\Users\\jalen\\.nuget\\packages\\",
+        "outputPath": "C:\\source\\repos\\PharmacyProject\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jaide\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jalen\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -73,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
         }
       }
     }

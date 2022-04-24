@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+using api.Interfaces;
+using api.Models;
+using api.Database;
 
 namespace api.Controllers
 {
@@ -12,40 +16,50 @@ namespace api.Controllers
     public class AppointmentController : ControllerBase
     {
         // GET: api/Appointment
-        
+        [EnableCors("AnotherPolicy")]
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<Appointment> Get()
         {
-            return new string[] { "value1", "value2" };
+            IHandleAppointment appointment = new AppointmentUtility();
+            return appointment.GetAll();
         }
 
         // GET: api/Appointment/5
-        
+        [EnableCors("AnotherPolicy")]
         [HttpGet("{id}", Name = "GetAppointment")]
-        public string Get(int id)
+        public Appointment Get(int id)
         {
-            return "value";
+            IHandleAppointment getAppointment = new AppointmentUtility();
+            return getAppointment.GetOne(id);
         }
 
         // POST: api/Appointment
        
+       [EnableCors("AnotherPolicy")]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Appointment value)
         {
+            IHandleAppointment postAppointment = new AppointmentUtility();
+            postAppointment.Create(value);
         }
 
         // PUT: api/Appointment/5
        
+       [EnableCors("AnotherPolicy")]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Appointment value)
         {
+            IHandleAppointment updateAppointment = new AppointmentUtility();
+            updateAppointment.Update(value);
         }
 
         // DELETE: api/Appointment/5
-        
+        [EnableCors("AnotherPolicy")]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            IHandleAppointment deleteAppointment = new AppointmentUtility();
+            getAppointment.Delete(id);
         }
     }
 }
