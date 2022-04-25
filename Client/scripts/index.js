@@ -2,6 +2,7 @@ const baseUrl = "https://localhost:5001/api";
 var userURL = baseUrl + "/" + "Users";
 var userList = [];
 var date = new Date();
+var selectedDate = new Date();
 date.setDate(1);
 
 
@@ -99,8 +100,8 @@ function renderCalendar() {
 
 //Function that changes the date on the page when a different day on the calendar is selected
 function handleDateClick(day, month, year) {
-  var selected = new Date(year, month, day);
-  renderData(selected.toDateString());
+  selectedDate = new Date(year, month, day);
+  renderData(selectedDate.toDateString());
 }
 
 //Changes calendar to previous month
@@ -149,7 +150,7 @@ function renderCrud(type) {
     //Availabilities
     html += `<button id="add" type="button" class="btn btn-secondary" onclick="renderAvailabilityForm()">Add</button>`;
     html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Update</button>`;
-    html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
+    html += `<button id="delete" type="button" class="btn btn-secondary" onclick="renderDeleteForm()">Delete</button>`;
   }else if(type == 3) {
     //Appointments
     html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
@@ -185,11 +186,90 @@ function getAvailabilities() {
 //API call to add/create a new availability
 function addAvailability() {
   var url = baseUrl + "/availability";
+  var start = formatDates(document.getElementById("start").value + ":00");
+  var end = formatDates(document.getElementById("end").value + ":00");
+
+  var sendObj = {
+    userId: 1,
+    startDateTime: start,
+    endDateTime: end
+  }
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Accept" : 'application/json',
+      "Content-Type" : 'application/json',
+    },
+    body: JSON.stringify(sendObj)
+  }).then((response) => {
+    console.log(response);
+    clearAvailabilityForm();
+    getAvailabilities();
+  })
+}
+
+//function to render form to create a new availability
+function renderAvailabilityForm() {
+  let destination = document.getElementById("form");
+  let html = "";
+  html += `<form onsubmit="return false;" method="post">`;
+  html += `<label class="form-label" for="date">Availability Date:</label><br>`;
+  html += `<input class="form-control" type="text" id="date" name="date" value="${selectedDate.toDateString()} readonly"><br>`;
+  html += `<label class="form-label" for="start-time">Start Time:</label><br>`;
+  html += `<input class="form-control" type="time" id="start" name="start" min="09:00" max="18:00" required><br>`;
+  html += `<label class="form-label" for="end-time">End Time:</label><br>`;
+  html += `<input class="form-control" type="time" id="end" name="end" min="09:00" max="18:00" required><br>`;
+  html += `<button class="btn btn-dark" onclick="addAvailability()">Add Availability</button>`;
+  html += `</form>`;
+
+  destination.innerHTML = html;
+}
+
+//function to clear availability form after new availability is submitted
+function clearAvailabilityForm() {
+  document.getElementById("form").innerHTML = "";
+}
+
+//formats dates from form into a suitable value for the database
+function formatDates(time) {
+  if((selectedDate.getMonth() + 1) < 10){
+    return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+  }
+  else{
+    return selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+  }
 }
 
 //API call to delete an availability
-function deleteAvailability(id) {
+function deleteAvailability() {
+  let id = document.getElementById("toDelete").value;
   var url = baseUrl + "/availability/" + id;
+
+  fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Accept" : 'application/json',
+      "Content-Type" : 'application/json',
+    },
+    body: JSON.stringify()
+  }).then((response) => {
+    console.log(response);
+    clearAvailabilityForm();
+    getAvailabilities();
+  })
+}
+
+function renderDeleteForm() {
+  let destination = document.getElementById("form");
+  let html = "";
+  html += `<form onsubmit="return false;" method="delete">`;
+  html += `<label class="form-label" for="delete">Enter the ID of availability to delete:</label><br>`;
+  html += `<input class="form-control" type="text" id="toDelete" name="date"><br>`;
+  html += `<button class="btn btn-dark" onclick="deleteAvailability()">Delete Availability</button>`;
+  html += `</form>`;
+
+  destination.innerHTML = html;
 }
 
 //API call to update availability??

@@ -16,7 +16,7 @@
     flex: 50%;
 }
 
-table {
+.calendar table {
     border: 1px solid;
     width: 80%;
     height: 500px;
@@ -25,14 +25,14 @@ table {
     margin-right: 10%;
 }
 
-th, td {
+.calendar th, .calendar td {
     border: 1px solid;
     text-align: center;
     width: 14.2857143%;
     height: 62.5px;
 }
 
-th {
+.calendar th {
     background-color: green;
     color: white;
     border: 1px solid;
@@ -40,7 +40,7 @@ th {
     width: 25px;
 }
 
-td:hover {
+.calendar td:hover {
     background-color: gray;
     color: white;
 }
@@ -51,6 +51,24 @@ td:hover {
 }
 
 .calendar-control {
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10px;
+}
+
+.crud-controls {
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10px;
+}
+
+.button-row {
     display: flex;
     justify-content: center;
     justify-content: space-between;
