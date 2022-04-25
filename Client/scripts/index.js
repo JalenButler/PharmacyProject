@@ -222,7 +222,7 @@ function renderAvailabilityForm() {
   let html = "";
   html += `<form onsubmit="return false;" method="post">`;
   html += `<label class="form-label" for="date">Availability Date:</label><br>`;
-  html += `<input class="form-control" type="text" id="date" name="date" value="${selectedDate.toDateString()} readonly"><br>`;
+  html += `<input class="form-control" type="text" id="date" name="date" value="${selectedDate.toDateString()}" readonly><br>`;
   html += `<label class="form-label" for="start-time">Start Time:</label><br>`;
   html += `<input class="form-control" type="time" id="start" name="start" min="09:00" max="18:00" required><br>`;
   html += `<label class="form-label" for="end-time">End Time:</label><br>`;
