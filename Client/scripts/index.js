@@ -6,6 +6,12 @@ var date = new Date();
 var selectedDate = new Date();
 date.setDate(1);
 
+//This is entirely messy. However, it is needed because of page refreshes.
+var localStorePerson = "";
+var local = localStorage.getItem(localStorePerson);
+var storedPerson = JSON.parse(local);
+userPerson = storedPerson;
+
 
 //Array holding string values of months
 const months = [
@@ -364,7 +370,69 @@ function updateUser() {
 
 //API call to get appointments
 function getAppointments() {
+  var url = baseUrl + "/Appointment";
+  let html = "";
 
+  fetch(url).then(function(response) {
+    return response.json();
+  }).then(function(json) {
+      console.log(json);
+      console.log(userPerson)
+
+    if(userPerson.userType == 1){
+        
+
+        html += `<table id = "customers"><tr><th>Time</th><th>Customer Name</th><th>Reason</th></tr>`;
+        json.forEach(appointment => {
+          html += `<tr>`;
+          html += `<td>Start: ${appointment.startDateTime}   End: ${appointment.endDateTime}</td>`;
+          console.log(appointment);
+          console.log(userList)
+          userList.forEach((person) =>{
+              if(person.userType != 1 && appointment.custID == person.userId)
+              {
+                html += `<td>${person.firstName} ${person.lastName}</td>`;
+                console.log(person.firstName)
+              }
+
+              console.log()
+          });
+  
+          html += `<td>${appointment.apptReason}</td>`;
+          html += `</tr>`;
+        });
+        html += `</table>`;
+      
+    }
+      console.log()
+    //Customer View
+    if(userPerson.userType == 2 || userPerson.userType == 3){
+
+      html += `<table id="appointment"><tr><th>Time</th><th>Pharmacist Name</th><th>Reason</th></tr>`;
+      json.forEach(appointment => {
+        html += `<tr>`;
+        html += `<td>Start: ${appointment.startDateTime}   End: ${appointment.endDateTime}</td>`;
+        console.log(appointment);
+        userList.forEach((person) =>{
+            if(person.userType == 1 && appointment.userId == person.userId)
+            {
+              html += `<td>${person.firstName} ${person.lastName}</td>`;
+              console.log(person.firstName)
+            }
+
+            console.log()
+        });
+
+        html += `<td>${appointment.apptReason}</td>`;
+        html += `</tr>`;
+      });
+      html += `</table>`;
+    }
+
+   document.getElementById("right-table").innerHTML = html;
+  }).catch(function(error){
+    console.log(error);
+  })
 }
 
 //API call to add/create appointment
@@ -383,30 +451,34 @@ function updateAppointment() {
 }
 
 function loginUser(){
-
   console.log(userList);
 
-var loginUserN = document.getElementById("typeEmail").value;
-var loginP = document.getElementById("typePassword").value;
-found = false;
+  var loginUserN = document.getElementById("typeEmail").value;
+  var loginP = document.getElementById("typePassword").value;
+  found = false;
 
-userList.forEach((user) =>{
-  if(user.userName == loginUserN && user.userPassword == loginP)
-  {
-      found = true;
-      userPerson = user; 
-  }
-})
-if(found == true)
-{
-  location.replace("index.html");
-}
-if(found == false){
-  alert("The username or password is incorrect. Please try again.");
-  document.getElementById("typeEmail").focus();
-  document.getElementById("typeEmail").value = "";
-  document.getElementById("typePassword").value = ""; 
-}
+  userList.forEach((user) =>{
+    if(user.userName == loginUserN && user.userPassword == loginP)
+    {
+        found = true;
+        userPerson = user;
+        const userString = userPerson
+        const myJSON = JSON.stringify(userString)
+        localStorage.setItem(localStorePerson, myJSON);
+    }
+  })
+
+    if(found == true)
+    {
+      location.replace("index.html");
+    }
+    if(found == false){
+      alert("The username or password is incorrect. Please try again.");
+      document.getElementById("typeEmail").focus();
+      document.getElementById("typeEmail").value = "";
+      document.getElementById("typePassword").value = ""; 
+  } 
+
 
 }
 
