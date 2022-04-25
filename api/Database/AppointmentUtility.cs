@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using api;
 using api.Models;
 using MySql.Data.MySqlClient;
+using System;
 
 namespace api.Database
 {
@@ -72,8 +73,16 @@ namespace api.Database
 
             while(rdr.Read())
             {
-                Appointment temp = new Appointment(){ApptID = rdr.GetInt32(0), ApptReason = rdr.GetString(1)};
-                AppointmentList.Add(temp);
+                
+                AppointmentList.Add(new Appointment()
+                {ApptID = rdr.GetInt32(0), 
+                ApptReason = rdr.GetString(1),
+                startDateTime = DateTime.Parse(rdr.GetString(2)),
+                endDateTime = DateTime.Parse(rdr.GetString(3)),
+                custID = rdr.GetInt32(4),
+                userId = rdr.GetInt32(5)
+                
+                });
             } 
             con.Close();
             return AppointmentList;
