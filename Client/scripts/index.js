@@ -1,6 +1,7 @@
 const baseUrl = "https://localhost:5001/api";
 var userURL = baseUrl + "/" + "Users";
 var userList = [];
+var userPerson = [];
 var date = new Date();
 date.setDate(1);
 
@@ -119,7 +120,7 @@ function handleNextClick() {
 function renderData(selectedDate) {
   renderDate(selectedDate);
   renderButtons();
-  renderCrud(2);
+  renderCrud(userPerson.usertype);
 }
 
 //Displays selected date from calendar above appt/avail/user data side
@@ -202,6 +203,7 @@ function getUsers() {
     return response.json();
 }) .then(function(json) {
     userList = json;
+    console.log("This is getusers " + userList)
 }).catch(function(error){
   console.log(error);
 });
@@ -297,6 +299,34 @@ function deleteAppointment() {
 
 //API call to update an appointment
 function updateAppointment() {
+
+}
+
+function loginUser(){
+
+  console.log(userList);
+
+var loginUserN = document.getElementById("typeEmail").value;
+var loginP = document.getElementById("typePassword").value;
+found = false;
+
+userList.forEach((user) =>{
+  if(user.userName == loginUserN && user.userPassword == loginP)
+  {
+      found = true;
+      userPerson = user; 
+  }
+})
+if(found == true)
+{
+  location.replace("index.html");
+}
+if(found == false){
+  alert("The username or password is incorrect. Please try again.");
+  document.getElementById("typeEmail").focus();
+  document.getElementById("typeEmail").value = "";
+  document.getElementById("typePassword").value = ""; 
+}
 
 }
 
