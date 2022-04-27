@@ -127,19 +127,6 @@ function handleNextClick() {
 function renderData(selectedDate) {
   renderDate(selectedDate);
   renderButtons();
-
-  if(userPerson.userType == 1) { //Pharmacist
-
-  }
-  else if(userPerson.userType == 2) { //pharm tech
-
-  }
-  else if(userPerson.userType == 3) { //Customer
-
-  }
-  else { //delivery
-
-  }
 }
 
 //Displays selected date from calendar above appt/avail/user data side
@@ -154,7 +141,7 @@ function renderButtons() {
   var html = "";
 
   if(userPerson.userType == 1) { //Pharmacist
-    html += `<button id="users" type="button" class="btn btn-secondary" onclick="getUsers(); renderCrud(1);">Users</button>`;
+    html += `<button id="users" type="button" class="btn btn-secondary" onclick="showUsers(); renderCrud(1);">Users</button>`;
     html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2);">Availabilities</button>`;
     html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3);">Appointments</button>`;
   }
@@ -190,18 +177,21 @@ function renderCrud(type) {
   document.getElementById("crud-controls").innerHTML = html;
 }
 
+//renders button to book an availability
 function renderBook() {
   var html = "";
   html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Book</button>`;
   document.getElementById("crud-controls").innerHTML = html;
 }
 
+//renders button to cancel an appointment
 function renderCancel() {
   var html = "";
   html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Cancel</button>`;
   document.getElementById("crud-controls").innerHTML = html;
 }
 
+//Breaks down date time into a comparable format
 function parseDate(value) {
   var array = value.split('T');
   var tempDate = array[0].split('-');
@@ -210,6 +200,7 @@ function parseDate(value) {
   return hold;
 }
 
+//Breaks down date time into a readable time string
 function parseTime(value) {
   var array = value.split('T');
   var tempDate = array[0].split('-');
@@ -219,7 +210,30 @@ function parseTime(value) {
   var hold = temp.toTimeString();
   var split = hold.split(' ');
 
-  return split[0];
+  var time = split[0];
+  time = time.split(':'); // convert to array
+
+  // fetch
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+  var seconds = Number(time[2]);
+
+  // calculate
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue= "" + hours;
+  } else if (hours > 12) {
+    timeValue= "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue= "12";
+  }
+  
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+  timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
+  timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+  return timeValue;
 }
 
 //API call to get availabilities
@@ -230,7 +244,7 @@ function getAvailabilities() {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
-    html += `<table><tr><th>Availability ID</th><th>Pharm ID</th><th>Start</th><th>End</th></tr>`;
+    html += `<table><tr><th>Availability ID</th><th>Pharmacist</th><th>Start</th><th>End</th></tr>`;
     
     json.forEach(availability => {
       var temp = parseDate(availability.startDateTime);
@@ -240,7 +254,7 @@ function getAvailabilities() {
       if(temp.toDateString() == selectedDate.toDateString()) {
         html += `<tr>`;
         html += `<td>${availability.availID}</td>`;
-        html += `<td>${availability.userID}</td>`;
+        html += `<td>${availability.userId}</td>`;
         html += `<td>${start}</td>`;
         html += `<td>${end}</td>`;
         html += `</tr>`;
@@ -261,7 +275,7 @@ function addAvailability() {
   var end = formatDates(document.getElementById("end").value + ":00");
 
   var sendObj = {
-    userId: 1,
+    userId: userPerson.userId,
     startDateTime: start,
     endDateTime: end
   }
@@ -357,6 +371,24 @@ function getUsers() {
 }).catch(function(error){
   console.log(error);
 });
+}
+
+function showUsers() {
+  let html = "";
+  html += `<table><tr><th>User ID</th><th>Name</th><th>Email</th><th>Birthdate</th><th>Gender</th></tr>`;
+
+  userList.forEach((user) => {
+    html += `<tr>`;
+    html += `<td>${user.userId}</td>`;
+    html += `<td>${user.firstName} ${user.lastName}</td>`;
+    html += `<td>${user.userName}</td>`;
+    html += `<td>${user.userBirthdate}</td>`;
+    html += `<td>${user.userGender}</td>`;
+    html += `</tr>`
+  })
+  html += `</table`;
+
+  document.getElementById("right-table").innerHTML = html;
 }
 
 //API call to add/create a new user

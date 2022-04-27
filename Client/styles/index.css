@@ -124,3 +124,33 @@
     color: white;
   }
 
+
+  .right-table table {
+    border: 1px solid;
+    width: 80%;
+    height: 500px;
+    table-layout: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+}
+
+.right-table th, .right-table td {
+    border: 1px solid;
+    text-align: center;
+    width: auto;
+    height: auto;
+}
+
+.right-table th {
+    background-color: green;
+    color: white;
+    border: 1px solid;
+    border-color: black;
+    width: 25px;
+}
+
+.right-table tr:hover {
+    background-color: gray;
+    color: white;
+}
