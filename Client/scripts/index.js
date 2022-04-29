@@ -437,12 +437,42 @@ function getAppointments() {
 
 //API call to add/create appointment
 function addAppointment() {
+  var url = baseUrl + "/appointment";
+
+var reason = document.getElementById("ApptReason").value;
+var start = document.getElementById("startDateTime").value;
+var end = document.getElementById("endDateTime").value ;
+
+fetch(url, {
+  method: "POST",
+  headers: {
+    "Accept" : 'application/json',
+    "Content-Type" : 'application/json',
+  },
+ 
+}).then((response) => {
+  console.log(response);
+  getAppointments();
+})
 
 }
 
 //API call to delete an appointment
 function deleteAppointment() {
+  let id = document.getElementById("toDelete").value;
+  var url = baseUrl + "/appointment/" + id;
 
+  fetch(url, {
+    method: "DELETE",
+    headers: {
+      "Accept" : 'application/json',
+      "Content-Type" : 'application/json',
+    },
+  }).then((response) => {
+    console.log(response);
+    
+    getAvailabilities();
+  })
 }
 
 //API call to update an appointment
