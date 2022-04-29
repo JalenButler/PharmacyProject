@@ -58,8 +58,8 @@ const daysInMonth = [
 
 //Function to page contents 
 function handleOnLoad() {
-  renderData(new Date().toDateString());
   renderCalendar();
+  renderData(new Date().toDateString());
 }
 
 //Function to render calendar for the page
@@ -127,7 +127,6 @@ function handleNextClick() {
 function renderData(selectedDate) {
   renderDate(selectedDate);
   renderButtons();
-  renderCrud(userPerson.usertype);
 }
 
 //Displays selected date from calendar above appt/avail/user data side
@@ -140,11 +139,24 @@ function renderDate(selectedDate) {
 //Displays buttons to change data tables
 function renderButtons() {
   var html = "";
-  html += `<button id="users" type="button" class="btn btn-secondary" onclick="getUsers(); renderCrud(1);">Users</button>`;
-  html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2);">Availabilities</button>`;
-  html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3);">Appointments</button>`;
+
+  if(userPerson.userType == 1) { //Pharmacist
+    html += `<button id="users" type="button" class="btn btn-secondary" onclick="showUsers(); renderCrud(1);">Users</button>`;
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2);">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3);">Appointments</button>`;
+  }
+  else if(userPerson.userType == 2) { //pharm tech
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities()">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments()">Appointments</button>`;
+  }
+  else if(userPerson.userType == 3 || userPerson.userType == 4) { //Customer & Delivery
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderBook();">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCancel();">Appointments</button>`;
+  }
+  
   document.getElementById("button-row").innerHTML = html;
 }
+
 
 //Renders buttons to perform crud operations on data
 function renderCrud(type) {
@@ -165,6 +177,65 @@ function renderCrud(type) {
   document.getElementById("crud-controls").innerHTML = html;
 }
 
+//renders button to book an availability
+function renderBook() {
+  var html = "";
+  html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Book</button>`;
+  document.getElementById("crud-controls").innerHTML = html;
+}
+
+//renders button to cancel an appointment
+function renderCancel() {
+  var html = "";
+  html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Cancel</button>`;
+  document.getElementById("crud-controls").innerHTML = html;
+}
+
+//Breaks down date time into a comparable format
+function parseDate(value) {
+  var array = value.split('T');
+  var tempDate = array[0].split('-');
+
+  var hold = new Date(tempDate[0], tempDate[1] - 1, tempDate[2]);
+  return hold;
+}
+
+//Breaks down date time into a readable time string
+function parseTime(value) {
+  var array = value.split('T');
+  var tempDate = array[0].split('-');
+  var tempTime = array[1].split(':');
+
+  var temp = new Date(tempDate[0], tempDate[1] - 1, tempDate[2], tempTime[0], tempTime[1], tempTime[2]);
+  var hold = temp.toTimeString();
+  var split = hold.split(' ');
+
+  var time = split[0];
+  time = time.split(':'); // convert to array
+
+  // fetch
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+  var seconds = Number(time[2]);
+
+  // calculate
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue= "" + hours;
+  } else if (hours > 12) {
+    timeValue= "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue= "12";
+  }
+  
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+  timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
+  timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+  return timeValue;
+}
+
 //API call to get availabilities
 function getAvailabilities() {
   var url = baseUrl + "/availability";
@@ -173,14 +244,21 @@ function getAvailabilities() {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
-    html += `<table><tr><th>Availability ID</th><th>Pharm ID</th><th>Start</th><th>End</th></tr>`;
+    html += `<table><tr><th>Availability ID</th><th>Pharmacist</th><th>Start</th><th>End</th></tr>`;
+    
     json.forEach(availability => {
-      html += `<tr>`;
-      html += `<td>${availability.availID}</td>`;
-      html += `<td>${availability.userID}</td>`;
-      html += `<td>${availability.startDateTime}</td>`;
-      html += `<td>${availability.endDateTime}</td>`;
-      html += `</tr>`;
+      var temp = parseDate(availability.startDateTime);
+      var start = parseTime(availability.startDateTime);
+      var end = parseTime(availability.endDateTime);
+
+      if(temp.toDateString() == selectedDate.toDateString()) {
+        html += `<tr>`;
+        html += `<td>${availability.availID}</td>`;
+        html += `<td>${availability.userId}</td>`;
+        html += `<td>${start}</td>`;
+        html += `<td>${end}</td>`;
+        html += `</tr>`;
+      }
     });
     html += `</table>`;
 
@@ -197,7 +275,7 @@ function addAvailability() {
   var end = formatDates(document.getElementById("end").value + ":00");
 
   var sendObj = {
-    userId: 1,
+    userId: userPerson.userId,
     startDateTime: start,
     endDateTime: end
   }
@@ -222,7 +300,7 @@ function renderAvailabilityForm() {
   let html = "";
   html += `<form onsubmit="return false;" method="post">`;
   html += `<label class="form-label" for="date">Availability Date:</label><br>`;
-  html += `<input class="form-control" type="text" id="date" name="date" value="${selectedDate.toDateString()} readonly"><br>`;
+  html += `<input class="form-control" type="text" id="date" name="date" value="${selectedDate.toDateString()}" readonly><br>`;
   html += `<label class="form-label" for="start-time">Start Time:</label><br>`;
   html += `<input class="form-control" type="time" id="start" name="start" min="09:00" max="18:00" required><br>`;
   html += `<label class="form-label" for="end-time">End Time:</label><br>`;
@@ -293,6 +371,24 @@ function getUsers() {
 }).catch(function(error){
   console.log(error);
 });
+}
+
+function showUsers() {
+  let html = "";
+  html += `<table><tr><th>User ID</th><th>Name</th><th>Email</th><th>Birthdate</th><th>Gender</th></tr>`;
+
+  userList.forEach((user) => {
+    html += `<tr>`;
+    html += `<td>${user.userId}</td>`;
+    html += `<td>${user.firstName} ${user.lastName}</td>`;
+    html += `<td>${user.userName}</td>`;
+    html += `<td>${user.userBirthdate}</td>`;
+    html += `<td>${user.userGender}</td>`;
+    html += `</tr>`
+  })
+  html += `</table`;
+
+  document.getElementById("right-table").innerHTML = html;
 }
 
 //API call to add/create a new user
