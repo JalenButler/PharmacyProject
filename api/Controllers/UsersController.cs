@@ -53,7 +53,8 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-
+            IHandleUser deleteUsers = new UserUtility();
+            deleteUsers.Delete(id);
         }
     }
 }

@@ -55,6 +55,8 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            IHandleAvailability deleteAvailability = new AvailabilityUtility();
+            deleteAvailability.Delete(id);
         }
     }
 }
