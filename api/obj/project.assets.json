@@ -7411,34 +7411,19 @@
     ]
   },
   "packageFolders": {
-<<<<<<< HEAD
-    "C:\\Users\\jalen\\.nuget\\packages\\": {}
-=======
-    "/Users/seanyburks/.nuget/packages/": {}
->>>>>>> ca36d930b6cb97ac3ac643994421edc873d59e26
+    "C:\\Users\\jaide\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
-      "projectUniqueName": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
+      "projectUniqueName": "c:\\source\\repos\\MIS321\\PharmacyProject\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\source\\repos\\PharmacyProject\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\jalen\\.nuget\\packages\\",
-      "outputPath": "C:\\source\\repos\\PharmacyProject\\api\\obj\\",
+      "projectPath": "c:\\source\\repos\\MIS321\\PharmacyProject\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\jaide\\.nuget\\packages\\",
+      "outputPath": "c:\\source\\repos\\MIS321\\PharmacyProject\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jalen\\AppData\\Roaming\\NuGet\\NuGet.Config"
-=======
-      "projectUniqueName": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj",
-      "projectName": "api",
-      "projectPath": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj",
-      "packagesPath": "/Users/seanyburks/.nuget/packages/",
-      "outputPath": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/obj/",
-      "projectStyle": "PackageReference",
-      "configFilePaths": [
-        "/Users/seanyburks/.nuget/NuGet/NuGet.Config"
->>>>>>> ca36d930b6cb97ac3ac643994421edc873d59e26
+        "C:\\Users\\jaide\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
@@ -7497,11 +7482,7 @@
             "privateAssets": "all"
           }
         },
-<<<<<<< HEAD
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
-=======
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.201/RuntimeIdentifierGraph.json"
->>>>>>> ca36d930b6cb97ac3ac643994421edc873d59e26
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

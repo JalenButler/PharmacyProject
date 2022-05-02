@@ -480,22 +480,29 @@ function getAppointments() {
 
         html += `<table id = "customers"><tr><th>Time</th><th>Customer Name</th><th>Reason</th></tr>`;
         json.forEach(appointment => {
-          html += `<tr>`;
-          html += `<td>Start: ${appointment.startDateTime}   End: ${appointment.endDateTime}</td>`;
-          console.log(appointment);
-          console.log(userList)
-          userList.forEach((person) =>{
-              if(person.userType != 1 && appointment.custID == person.userId)
-              {
-                html += `<td>${person.firstName} ${person.lastName}</td>`;
-                console.log(person.firstName)
-              }
-
-              console.log()
-          });
+          var temp = parseDate(appointment.startDateTime);
+          var start = parseTime(appointment.startDateTime);
+          var end = parseTime(appointment.endDateTime)
+          if(temp.toDateString() == selectedDate.toDateString()){
+            html += `<tr>`;
+            html += `<td>Start: ${start}   End: ${end}</td>`;
+            console.log(appointment);
+            console.log(userList)
+            userList.forEach((person) =>{
+                if(person.userType != 1 && appointment.custID == person.userId)
+                {
+                  html += `<td>${person.firstName} ${person.lastName}</td>`;
+                  console.log(person.firstName)
+                }
   
-          html += `<td>${appointment.apptReason}</td>`;
-          html += `</tr>`;
+                console.log()
+                html += `<td>${appointment.apptReason}</td>`;
+                html += `</tr>`;
+          })
+
+          };
+  
+
         });
         html += `</table>`;
       
@@ -506,8 +513,12 @@ function getAppointments() {
 
       html += `<table id="appointment"><tr><th>Time</th><th>Pharmacist Name</th><th>Reason</th></tr>`;
       json.forEach(appointment => {
+        var temp = parseDate(appointment.startDateTime);
+        temp = temp.toDateString();
+        var start = parseTime(appointment.startDateTime);
+        var end = parseTime(appointment.endDateTime)
         html += `<tr>`;
-        html += `<td>Start: ${appointment.startDateTime}   End: ${appointment.endDateTime}</td>`;
+        html += `<td>Day: ${temp}\tStart: ${start}\tEnd: ${end}</td>`;
         console.log(appointment);
         userList.forEach((person) =>{
             if(person.userType == 1 && appointment.userId == person.userId)
@@ -524,7 +535,12 @@ function getAppointments() {
       });
       html += `</table>`;
     }
-
+    console.log(html)
+    var checking = '<table id = "customers"><tr><th>Time</th><th>Customer Name</th><th>Reason</th></tr></table>'
+    if(html == checking)
+    {
+      html = '<p> <b>No appointments have been booked on this day.<b> </p>';
+    }
    document.getElementById("right-table").innerHTML = html;
   }).catch(function(error){
     console.log(error);
