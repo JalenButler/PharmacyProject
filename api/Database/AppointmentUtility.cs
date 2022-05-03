@@ -19,13 +19,16 @@ namespace api.Database
             using var con = new MySqlConnection(cs);
             con.Open();
 
-            string stm = @"INSERT INTO appointment(apptReason) Values(@apptReason)";
+            string stm = @"INSERT INTO appointment(apptReason, startDateTime, endDateTime, custID, userId) Values(@apptReason, @startDateTime, @endDateTime, @custID, @userID)";
 
             using var cmd = new MySqlCommand(stm, con);
 
             
             cmd.Parameters.AddWithValue("@apptReason", newappointment.ApptReason);
-            
+            cmd.Parameters.AddWithValue("@startDateTime", newappointment.startDateTime);
+            cmd.Parameters.AddWithValue("@endDateTime", newappointment.endDateTime);
+            cmd.Parameters.AddWithValue("@custID", newappointment.custID);
+            cmd.Parameters.AddWithValue("@userId", newappointment.userId);
             
             cmd.ExecuteNonQuery();
 

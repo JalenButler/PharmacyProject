@@ -7,10 +7,7 @@ var selectedDate = new Date();
 var availabilityList = [];
 date.setDate(1);
 
-var temp1;
-var temp2;
-var temp3;
-var temp4;
+let selectedObj = {};
 
 //This is entirely messy. However, it is needed because of page refreshes.
 var localStorePerson = "";
@@ -134,6 +131,10 @@ function renderData(selectedDate) {
   renderDate(selectedDate);
   getAvailabilities();
   renderButtons();
+
+  if(userPerson.userType == 3 || userPerson.userType == 4) {
+    renderBookForm();
+  }
 }
 
 //Displays selected date from calendar above appt/avail/user data side
@@ -206,7 +207,7 @@ function renderBookForm() {
   html += `<option value="Flu Shot">Flu Shot</option>`;
   html += `<option value="Checkup">Checkup</option>`;
   html += `</select><br>`;
-  html += `<button class="btn btn-dark" onclick="">Book Appointment</button>`;
+  html += `<button class="btn btn-dark" onclick="addAppointment()">Book Appointment</button>`;
   html += `</form>`;
 
   destination.innerHTML = html;
@@ -214,7 +215,6 @@ function renderBookForm() {
 
 //Fills the book appointment form when an availability is selected
 function populateBookForm(id) {
-  let selectedObj = {};
   availabilityList.forEach(value => {
     if(id == value.availID){
       selectedObj = value;
@@ -332,6 +332,7 @@ function getAvailabilities() {
     document.getElementById("right-table").innerHTML = html;
   }).catch(function(error){
     console.log(error);
+    renderAvailabilityForm();
   })
 }
 
@@ -394,8 +395,7 @@ function formatDates(time) {
 }
 
 //API call to delete an availability
-function deleteAvailability() {
-  let id = document.getElementById("toDelete").value;
+function deleteAvailability(id) {
   var url = baseUrl + "/availability/" + id;
 
   fetch(url, {
@@ -407,7 +407,7 @@ function deleteAvailability() {
     body: JSON.stringify()
   }).then((response) => {
     console.log(response);
-    clearAvailabilityForm();
+    clearForm();
     getAvailabilities();
   })
 }
@@ -617,21 +617,28 @@ function getAppointments() {
 //API call to add/create appointment
 function addAppointment() {
   var url = baseUrl + "/appointment";
+  
+  var sendObj = {
+    apptReason: document.getElementById("reason").value,
+    startDateTime: selectedObj.startDateTime,
+    endDateTime: selectedObj.endDateTime,
+    custID: userPerson.userId,
+    userId: selectedObj.userId
+  }
 
-var reason = document.getElementById("ApptReason").value;
-var start = document.getElementById("startDateTime").value;
-var end = document.getElementById("endDateTime").value ;
+  console.log(sendObj);
 
-fetch(url, {
-  method: "POST",
-  headers: {
-    "Accept" : 'application/json',
-    "Content-Type" : 'application/json',
-  },
- 
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Accept" : 'application/json',
+      "Content-Type" : 'application/json',
+    },
+    body: JSON.stringify(sendObj)
 }).then((response) => {
   console.log(response);
-  getAppointments();
+  deleteAvailability(selectedObj.availID);
+  renderData();
 })
 
 }
@@ -649,7 +656,6 @@ function deleteAppointment() {
     },
   }).then((response) => {
     console.log(response);
-    
     getAvailabilities();
   })
 }
