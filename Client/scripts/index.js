@@ -4,7 +4,13 @@ var userList = [];
 var userPerson = [];
 var date = new Date();
 var selectedDate = new Date();
+var availabilityList = [];
 date.setDate(1);
+
+var temp1;
+var temp2;
+var temp3;
+var temp4;
 
 //This is entirely messy. However, it is needed because of page refreshes.
 var localStorePerson = "";
@@ -126,6 +132,7 @@ function handleNextClick() {
 //Function to render right side of webpage
 function renderData(selectedDate) {
   renderDate(selectedDate);
+  getAvailabilities();
   renderButtons();
 }
 
@@ -141,22 +148,23 @@ function renderButtons() {
   var html = "";
 
   if(userPerson.userType == 1) { //Pharmacist
-    html += `<button id="users" type="button" class="btn btn-secondary" onclick="showUsers(); renderCrud(1);">Users</button>`;
-    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2);">Availabilities</button>`;
-    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3);">Appointments</button>`;
+    html += `<button id="users" type="button" class="btn btn-secondary" onclick="showUsers(); renderCrud(1); clearForm();">Users</button>`;
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderCrud(2); clearForm();">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCrud(3); clearForm();">Appointments</button>`;
+    renderCrud(2);
   }
   else if(userPerson.userType == 2) { //pharm tech
-    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities()">Availabilities</button>`;
-    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments()">Appointments</button>`;
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); clearForm();">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); clearForm();">Appointments</button>`;
   }
   else if(userPerson.userType == 3 || userPerson.userType == 4) { //Customer & Delivery
-    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); renderBook();">Availabilities</button>`;
-    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCancel();">Appointments</button>`;
+    html += `<button id="availabilities" type="button" class="btn btn-secondary" onclick="getAvailabilities(); clearForm(); renderBookForm(); clearCrud();">Availabilities</button>`;
+    html += `<button id="appointments" type="button" class="btn btn-secondary" onclick="getAppointments(); renderCancel(); clearForm();">Appointments</button>`;
+    renderBookForm();
   }
   
   document.getElementById("button-row").innerHTML = html;
 }
-
 
 //Renders buttons to perform crud operations on data
 function renderCrud(type) {
@@ -177,11 +185,60 @@ function renderCrud(type) {
   document.getElementById("crud-controls").innerHTML = html;
 }
 
-//renders button to book an availability
-function renderBook() {
-  var html = "";
-  html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Book</button>`;
-  document.getElementById("crud-controls").innerHTML = html;
+function clearCrud() {
+  document.getElementById("crud-controls").innerHTML = "";
+}
+
+function renderBookForm() {
+  let destination = document.getElementById("form");
+  let html = "";
+  html += `<form onsubmit="return false;">`;
+  html += `<label for="availability">Pharmacist:</label>`;
+  html += `<input class="form-control" type="text" id="form-appt-pharm" name="appt-pharm" value="" readonly><br>`;
+  html += `<label for="availability">Start:</label>`;
+  html += `<input class="form-control" type="text" id="form-start-time" name="start" value="" readonly><br>`;
+  html += `<label for="availability">End:</label>`;
+  html += `<input class="form-control" type="text" id="form-end-time" name="end" value="" readonly><br>`;
+  html += `<label for="reason">Select an appointment reason:</label>`;
+  html += `<select id="reason" name="reason">`;
+  html += `<option value="Perscription Pickup">Perscription Pickup</option>`;
+  html += `<option value="Covid-19 Vaccine">Covid-19 Vaccine</option>`;
+  html += `<option value="Flu Shot">Flu Shot</option>`;
+  html += `<option value="Checkup">Checkup</option>`;
+  html += `</select><br>`;
+  html += `<button class="btn btn-dark" onclick="">Book Appointment</button>`;
+  html += `</form>`;
+
+  destination.innerHTML = html;
+}
+
+//Fills the book appointment form when an availability is selected
+function populateBookForm(id) {
+  let selectedObj = {};
+  availabilityList.forEach(value => {
+    if(id == value.availID){
+      selectedObj = value;
+    }
+  });
+
+  document.getElementById("form-appt-pharm").value = getUserFullName(selectedObj.userId);
+  document.getElementById("form-start-time").value = parseTime(selectedObj.startDateTime);
+  document.getElementById("form-end-time").value = parseTime(selectedObj.endDateTime);
+}
+
+//Puts together the name of a user given their id
+function getUserFullName(id) {
+  let first = "";
+  let last = "";
+
+  userList.forEach(user => {
+    if(id == user.userId) {
+      first = user.firstName;
+      last = user.lastName;
+    }
+  });
+
+  return first + " " + last;
 }
 
 //renders button to cancel an appointment
@@ -244,17 +301,20 @@ function getAvailabilities() {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
+    availabilityList = json;
     html += `<table><tr><th>Availability ID</th><th>Pharmacist</th><th>Start</th><th>End</th></tr>`;
     
+
     json.forEach(availability => {
       var temp = parseDate(availability.startDateTime);
       var start = parseTime(availability.startDateTime);
       var end = parseTime(availability.endDateTime);
+      var name = getUserFullName(availability.userId);
 
       if(temp.toDateString() == selectedDate.toDateString()) {
-        html += `<tr>`;
+        html += `<tr data-value="${availability.availID}" onclick="populateBookForm(${availability.availID})">`;
         html += `<td>${availability.availID}</td>`;
-        html += `<td>${availability.userId}</td>`;
+        html += `<td>${name}</td>`;
         html += `<td>${start}</td>`;
         html += `<td>${end}</td>`;
         html += `</tr>`;
@@ -289,7 +349,7 @@ function addAvailability() {
     body: JSON.stringify(sendObj)
   }).then((response) => {
     console.log(response);
-    clearAvailabilityForm();
+    clearForm();
     getAvailabilities();
   })
 }
@@ -312,7 +372,7 @@ function renderAvailabilityForm() {
 }
 
 //function to clear availability form after new availability is submitted
-function clearAvailabilityForm() {
+function clearForm() {
   document.getElementById("form").innerHTML = "";
 }
 
