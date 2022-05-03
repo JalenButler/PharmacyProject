@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\source\\repos\\mis321\\pharmacyproject\\api\\api.csproj": {}
+    "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj": {}
   },
   "projects": {
-    "C:\\source\\repos\\mis321\\pharmacyproject\\api\\api.csproj": {
+    "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\source\\repos\\mis321\\pharmacyproject\\api\\api.csproj",
+        "projectUniqueName": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\source\\repos\\mis321\\pharmacyproject\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\jaide\\.nuget\\packages\\",
-        "outputPath": "C:\\source\\repos\\mis321\\pharmacyproject\\api\\obj\\",
+        "projectPath": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/api.csproj",
+        "packagesPath": "/Users/seanyburks/.nuget/packages/",
+        "outputPath": "/Users/seanyburks/Documents/MIS321/source/repos/PharmacyProject/api/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\jaide\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/seanyburks/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -73,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.201/RuntimeIdentifierGraph.json"
         }
       }
     }
