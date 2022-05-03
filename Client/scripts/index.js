@@ -261,6 +261,13 @@ function getAvailabilities() {
       }
     });
     html += `</table>`;
+    
+    console.log(html);
+    var checking = "<table><tr><th>Availability ID</th><th>Pharmacist</th><th>Start</th><th>End</th></tr></table>";
+    if(html == checking)
+    {
+      html = '<p> <b>No Availabilities have been made for this day.<b> </p>';
+    }
 
     document.getElementById("right-table").innerHTML = html;
   }).catch(function(error){
