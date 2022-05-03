@@ -638,3 +638,11 @@ function openForm() {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
+
+function pharmacyReport(){
+  if(userPerson.userType == 1)
+  {
+    document.getElementById("aa").style.display = "block";
+
+  }
+}
