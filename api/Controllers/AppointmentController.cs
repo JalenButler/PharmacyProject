@@ -24,6 +24,15 @@ namespace api.Controllers
             return appointment.GetAll();
         }
 
+        [EnableCors("AnotherPolicy")]
+        [HttpGet]
+        [Route ("api/Appointment/Reports")]
+        public List<UsersReporting> GetReport()
+        {
+            UserReports userReports = new UserReports();
+            return userReports.GetAll();
+        }
+
         // GET: api/Appointment/5
         [EnableCors("AnotherPolicy")]
         [HttpGet("{id}", Name = "GetAppointment")]
