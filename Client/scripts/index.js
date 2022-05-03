@@ -322,7 +322,7 @@ function getAvailabilities() {
     });
     html += `</table>`;
     
-    console.log(html);
+    // console.log(html);
     var checking = "<table><tr><th>Availability ID</th><th>Pharmacist</th><th>Start</th><th>End</th></tr></table>";
     if(html == checking)
     {
@@ -434,7 +434,7 @@ function getUsers() {
     return response.json();
 }) .then(function(json) {
     userList = json;
-    console.log("This is getusers " + userList)
+    // console.log("This is getusers " + userList)
 }).catch(function(error){
   console.log(error);
 });
@@ -539,10 +539,10 @@ function getAppointments() {
   fetch(url).then(function(response) {
     return response.json();
   }).then(function(json) {
-      console.log(json);
-      console.log(userPerson)
+      // console.log(json);
+      // console.log(userPerson)
 
-    if(userPerson.userType == 1){
+    if(userPerson.userType == 1 || userPerson.userType == 2){
         
 
         html += `<table id = "customers"><tr><th>Time</th><th>Customer Name</th><th>Reason</th></tr>`;
@@ -579,33 +579,36 @@ function getAppointments() {
     }
       console.log()
     //Customer View
-    if(userPerson.userType == 2 || userPerson.userType == 3){
+    if(userPerson.userType == 3){
+      // console.log(userPerson.userType);
 
       html += `<table id="appointment"><tr><th>Time</th><th>Pharmacist Name</th><th>Reason</th></tr>`;
       json.forEach(appointment => {
-        var temp = parseDate(appointment.startDateTime);
-        temp = temp.toDateString();
-        var start = parseTime(appointment.startDateTime);
-        var end = parseTime(appointment.endDateTime)
-        html += `<tr>`;
-        html += `<td>Day: ${temp}\tStart: ${start}\tEnd: ${end}</td>`;
-        console.log(appointment);
-        userList.forEach((person) =>{
-            if(person.userType == 1 && appointment.userId == person.userId)
-            {
-              html += `<td>${person.firstName} ${person.lastName}</td>`;
-              console.log(person.firstName)
-            }
+        if(userPerson.userId == appointment.custID){
+            var temp = parseDate(appointment.startDateTime);
+            temp = temp.toDateString();
+            var start = parseTime(appointment.startDateTime);
+            var end = parseTime(appointment.endDateTime)
+            html += `<tr>`;
+            html += `<td>Day: ${temp}\tStart: ${start}\tEnd: ${end}</td>`;
+            // console.log(appointment);
+            userList.forEach((person) =>{
+                if(person.userType == 1 && appointment.userId == person.userId)
+                {
+                  html += `<td>${person.firstName} ${person.lastName}</td>`;
+                  // console.log(person.firstName)
+                }
 
-            console.log()
         });
+      
 
         html += `<td>${appointment.apptReason}</td>`;
         html += `</tr>`;
+      }
       });
       html += `</table>`;
     }
-    console.log(html)
+    // console.log(html)
     var checking = '<table id = "customers"><tr><th>Time</th><th>Customer Name</th><th>Reason</th></tr></table>'
     if(html == checking)
     {
