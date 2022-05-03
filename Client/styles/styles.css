@@ -86,3 +86,11 @@ color: black;
 position: relative;
 left: -30px;
 }
+
+.navbar img{
+  width: 10%;
+  position:absolute;
+  left: 10px;
+  top: 30px;
+  background-color: green;
+}

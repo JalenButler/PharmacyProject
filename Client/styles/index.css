@@ -234,3 +234,7 @@
   .dropup:hover .dropbtn {
     background-color: grey;
   }
+
+.information canvas{
+    max-width: 600px;
+}

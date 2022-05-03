@@ -552,19 +552,22 @@ function getAppointments() {
           var end = parseTime(appointment.endDateTime)
           if(temp.toDateString() == selectedDate.toDateString()){
             html += `<tr>`;
-            html += `<td>Start: ${start}   End: ${end}</td>`;
+            // html += `<td>Start: ${start}   End: ${end}</td>`;
             console.log(appointment);
             console.log(userList)
             userList.forEach((person) =>{
                 if(person.userType != 1 && appointment.custID == person.userId)
                 {
+                  html += `<td>Start: ${start}   End: ${end}</td>`;
                   html += `<td>${person.firstName} ${person.lastName}</td>`;
+                  html += `<td>${appointment.apptReason}</td>`;
+                  html += `</tr>`;
                   console.log(person.firstName)
                 }
   
                 console.log()
-                html += `<td>${appointment.apptReason}</td>`;
-                html += `</tr>`;
+                // html += `<td>${appointment.apptReason}</td>`;
+                // html += `</tr>`;
           })
 
           };
