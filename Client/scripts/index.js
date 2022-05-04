@@ -835,9 +835,14 @@ function personalnformation(){
       options: {
         title: {
           display: true,
-          text: `${userPerson.firstName}'s Stats`
+          text: `2022: ${userPerson.firstName}'s Appointment Stats `
         }
       }
     })
+
+    if(xValues.length == 0){
+      let html = "You have not completed any appointments with the pharmacy."
+      document.getElementById("empty").innerHTML = html;
+    }
         
         }};
