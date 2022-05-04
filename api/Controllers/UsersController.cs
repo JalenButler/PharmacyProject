@@ -27,9 +27,10 @@ namespace api.Controllers
         // GET: api/Users/5
        [EnableCors("AnotherPolicy")]
         [HttpGet("{id}", Name = "GetUsers")]
-        public string Get(int id)
+        public List<UsersReporting> Get(int id)
         {
-            return "value";
+            IHandleUser users = new UserUtility();
+            return users.GetOne(id);
         }
 
         // POST: api/Users

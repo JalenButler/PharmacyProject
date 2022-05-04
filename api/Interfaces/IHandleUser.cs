@@ -8,7 +8,7 @@ namespace api.Interfaces
          public void Create(User user);
          public void Delete(int id);
          public List<User> GetAll();
-         public User GetOne(int id);
+         public List<UsersReporting> GetOne(int id);
          public void Update(User user);
     }
 }
