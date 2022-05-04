@@ -172,12 +172,10 @@ function renderCrud(type) {
   var html = "";
   if(type == 1) {
     //Users
-    html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Update</button>`;
     html += `<button id="delete" type="button" class="btn btn-secondary" onclick="">Delete</button>`;
   }else if(type == 2) {
     //Availabilities
     html += `<button id="add" type="button" class="btn btn-secondary" onclick="renderAvailabilityForm()">Add</button>`;
-    html += `<button id="update" type="button" class="btn btn-secondary" onclick="">Update</button>`;
     html += `<button id="delete" type="button" class="btn btn-secondary" onclick="renderDeleteForm()">Delete</button>`;
   }else if(type == 3) {
     //Appointments
@@ -202,10 +200,17 @@ function renderBookForm() {
   html += `<input class="form-control" type="text" id="form-end-time" name="end" value="" readonly><br>`;
   html += `<label for="reason">Select an appointment reason:</label>`;
   html += `<select id="reason" name="reason">`;
-  html += `<option value="Perscription Pickup">Perscription Pickup</option>`;
-  html += `<option value="Covid-19 Vaccine">Covid-19 Vaccine</option>`;
-  html += `<option value="Flu Shot">Flu Shot</option>`;
-  html += `<option value="Checkup">Checkup</option>`;
+
+  if(userPerson.userType == 3){
+    html += `<option value="Prescription Pickup">Prescription Pickup</option>`;
+    html += `<option value="Covid-19 Vaccine">Covid-19 Vaccine</option>`;
+    html += `<option value="Flu Shot">Flu Shot</option>`;
+    html += `<option value="Checkup">Checkup</option>`;
+  }
+  else if(userPerson.userType == 4){
+    html += `<option value="Delivery">Delivery</option>`;
+  }
+
   html += `</select><br>`;
   html += `<button class="btn btn-dark" onclick="addAppointment()">Book Appointment</button>`;
   html += `</form>`;
@@ -348,6 +353,8 @@ function addAvailability() {
     endDateTime: end
   }
 
+  console.log(sendObj);
+
   fetch(url, {
     method: "POST",
     headers: {
@@ -387,10 +394,20 @@ function clearForm() {
 //formats dates from form into a suitable value for the database
 function formatDates(time) {
   if((selectedDate.getMonth() + 1) < 10){
-    return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+    if(selectedDate.getDate() < 10){
+      return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-0" + selectedDate.getDate() + "T" + time;
+    }
+    else{
+      return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+    }
   }
   else{
-    return selectedDate.getFullYear() + "-" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+    if(selectedDate.getDate() < 10){
+      return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-0" + selectedDate.getDate() + "T" + time;
+    }
+    else{
+      return selectedDate.getFullYear() + "-0" + (selectedDate.getMonth() + 1) + "-" + selectedDate.getDate() + "T" + time;
+    }
   }
 }
 
