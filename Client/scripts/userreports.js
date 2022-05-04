@@ -1,6 +1,5 @@
 // const baseUrl = "https://localhost:5001/api";
 var userReports = [];
-
 function getUserReports(){
         var url = baseUrl + "/Appointment/api/Appointment/Reports";
       

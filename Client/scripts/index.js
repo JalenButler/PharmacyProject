@@ -467,56 +467,69 @@ var userName = document.getElementById("email").value;
 var userPassword = document.getElementById("password").value;
 var firstName = document.getElementById("firstname").value;
 var lastName = document.getElementById("lastname").value;
+var unique = true;
 //console.log(document.getElementById("email").value);
-if(document.getElementById("title").value == "pharmacist")
-{
-  usertype = 1;
-}
-if(document.getElementById("title").value == "pharmacytech")
-{
-  usertype = 2;
-}
-if(document.getElementById("title").value == "customer")
-{
-  usertype = 3;
-}
-if(document.getElementById("title").value == "delivery"){
-  usertype = 4;
-}
+userList.forEach((user) =>{
+  if(user.userName == userName)
+  {
+    unique = false;
+    alert("Sorry, someone in our system already has this email address.\nTry using a different email.\nIf you already have an account, please sign in.");
+    location.replace("login.html");
+  
+  }
+})
 
-console.log(firstName);
-console.log(lastName);
-console.log(userPassword);
-console.log(usertype);
-console.log(userBirthDate);
-console.log(userGender);
+  if(unique == true){
+    if(document.getElementById("title").value == "pharmacist")
+    {
+      usertype = 1;
+    }
+    if(document.getElementById("title").value == "pharmacytech")
+    {
+      usertype = 2;
+    }
+    if(document.getElementById("title").value == "customer")
+    {
+      usertype = 3;
+    }
+    if(document.getElementById("title").value == "delivery"){
+      usertype = 4;
+    }
 
-alert("Your account was created successfully. Please Login to continue.");
+    console.log(firstName);
+    console.log(lastName);
+    console.log(userPassword);
+    console.log(usertype);
+    console.log(userBirthDate);
+    console.log(userGender);
+
+    alert("Your account was created successfully. Please Login to continue.");
 
 
-  fetch(userURL, {
-      method: "POST",
-      headers: {
-          "Accept": 'application/json',
-          "Content-Type": 'application/json'
-      },
-      body: JSON.stringify({
-          userGender: userGender,
-          userBirthDate: userBirthDate,
-          usertype: usertype,
-          userName:userName,
-          userPassword: userPassword,
-          FirstName: firstName,
-          LastName: lastName
+      fetch(userURL, {
+          method: "POST",
+          headers: {
+              "Accept": 'application/json',
+              "Content-Type": 'application/json'
+          },
+          body: JSON.stringify({
+              userGender: userGender,
+              userBirthDate: userBirthDate,
+              usertype: usertype,
+              userName:userName,
+              userPassword: userPassword,
+              FirstName: firstName,
+              LastName: lastName
 
+          })
       })
-  })
-  .then((response)=>{
-      console.log(response)
-      getUsers();
-  }).catch(function(error){
-    console.log(error);
-  });
+      .then((response)=>{
+          console.log(response)
+          getUsers();
+      }).catch(function(error){
+        console.log(error);
+      });
+  }
 
 
 }
@@ -718,3 +731,96 @@ function pharmacyReport(){
 
   }
 }
+
+function publicInformation(){
+let html = '<p style="text-align: center;"><b>Public information</b></p><table width="100%" align="center" border=0>';
+html += `<tr style="background-color:green;">
+<td align="center"><b>First Name</b></td>
+<td align="center"><b>Last Name</b></td>
+</tr> 
+<tr>
+<td align="center"><div id="displayarea"></div>${userPerson.firstName}</td>
+<td align="center"><div id="displayarea1"></div>${userPerson.lastName}</td>
+</tr>`;
+html += "</table>"
+document.getElementById("div1").innerHTML = html;
+}
+
+function personalnformation(){
+  let html = '<p style="text-align: center;"><b>Personal information</b></p><table width="100%" align="center" border=0>';
+  html += `<tr style="background-color:green;">
+  <td align="center"><b>Gender</b></td>
+  <td align="center"><b>Birthday</b></td>
+  <td align="center"><b>Email</b></td>
+  </tr> 
+  <tr>
+  <td align="center"><div id="displayarea"></div>${userPerson.userGender.toUpperCase()}</td>
+  <td align="center"><div id="displayarea1"></div>${userPerson.userBirthdate}</td>
+  <td align="center"><div id="displayarea1"></div>${userPerson.userName}</td>
+  </tr>`;
+  html += "</table>"
+  document.getElementById("div3").innerHTML = html;
+  }
+
+  function userReport(){
+    var information;
+    var theUrl = `${userURL}/${userPerson.userId}`
+    fetch(theUrl).then(function(response){
+      return response.json();
+  }) .then(function(json) {
+      information = json;
+      console.log(json);
+      console.log(information);
+      SetUp(information)
+      
+  }).catch(function(error){
+    console.log(error);
+  });
+
+  function SetUp(information){
+  console.log(information)
+  var xValues = []
+  var yValues = []
+
+  var count = 0;
+  
+    information.forEach((stat) =>{
+      console.log(stat.apptReason)
+      xValues[count]= stat.apptReason
+      yValues[count] = stat.count
+      count ++
+    })
+    console.log(xValues)
+    console.log(yValues)
+    Visual(xValues, yValues)
+  };
+
+  function Visual(xValues, yValues){
+
+
+    var barColors = [
+      "#b91d47",
+      "#00aba9",
+      "#2b5797",
+      "#e8c3b9",
+      "#1e7145"
+    ];
+    
+    new Chart("myChart", {
+      type: "doughnut",
+      data: {
+        labels: xValues,
+        datasets: [{
+          backgroundColor: barColors,
+          data: yValues
+        }]
+      },
+      options: {
+        title: {
+          display: true,
+          text: `${userPerson.firstName}'s Stats`
+        }
+      }
+    })
+        
+        }};

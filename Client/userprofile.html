@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Box</title>
+    <style>
+        body{
+            background-color: rgb(9, 9, 9);
+        }
+        #div1{
+            height:35%;
+            width:50%; background-color:white;
+            position:fixed;
+            left: 3%;
+            top: 28%;
+            }
+        #div2{
+            height:35%;
+            width:50%; background-color:white;
+            position:fixed;
+            right: 3%;
+            top: 28%;
+            /* bottom:300px; */
+            }
+         #div3{
+            height:30%;
+            width:50%; background-color:white;
+            position:fixed;
+            left: 3%;
+            bottom: 3%;
+            /* bottom:280px; */
+            }
+        #div4{
+            height:69%;
+            width:40%; background-color:white ;
+            position:fixed;
+            right: 3%;
+            bottom: 3%;
+            }
+            
+    </style>
+        <link href="./styles/styles.css" rel = "stylesheet">
+        <link href="./styles/index.css" rel = "stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+
+<body onload = "publicInformation(); personalnformation(); userReport()" >
+    <div class="navbar">
+        <h1 class="page-name" style="color:black; font: italic; font-style: oblique;">Profile</h1>
+        <img id = "userprofileimg" src="./images/Tide Markett.png" alt=""> 
+        <div class="dropup">
+            <button class="dropbtn">Menu</button>
+            <div class="dropup-content">
+              <!-- <a href="#">Log Out</a> -->
+              <a href="index.html">Profile</a>
+              <a href="login.html">Log Out</a>
+            </div>
+            
+          </div>
+          <a  id = "aa"href = "3">Customer Reports</a>
+    </div>
+
+    <div id="div1">
+        <p style="text-align: center;">Public information</p>
+    </div>
+
+    <!-- <div id="div2">
+        <p>gender</p>
+    </div> -->
+
+    <div id="div3">
+        <p style="text-align: center;">Personal information</p>
+    </div>
+
+    <div id="div4"> 
+        <p style ="text-align: center;"></p>
+        <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+
+<!-- <script>
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var barColors = [
+  "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"
+];
+
+new Chart("myChart", {
+  type: "doughnut",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "World Wide Wine Production 2018"
+    }
+  }
+});
+</script> -->
+<script type = "text/javascript" src="scripts/index.js"></script> 
+    </div>

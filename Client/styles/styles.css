@@ -94,3 +94,11 @@ left: -30px;
   top: 30px;
   background-color: green;
 }
+
+.navbar #userprofileimg{
+  width: 10%;
+  position:absolute;
+  left: 15px;
+  top: 28px;
+  background-color: green;
+}
